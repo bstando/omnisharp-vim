@@ -1,4 +1,4 @@
-import vim, urllib, logging, json, os, os.path, cgi, types, threading
+import vim, urllib.parse, urllib.request, logging, json, os, os.path, cgi, types, threading
 import asyncrequest
 
 logger = logging.getLogger('omnisharp')
@@ -31,11 +31,11 @@ def getResponse(endPoint, additional_parameters=None, timeout=None):
     if vim.eval('exists("b:OmniSharp_host")') == '1':
         host = vim.eval('b:OmniSharp_host')
 
-    target = urlparse.urljoin(host, endPoint)
+    target = urllib.parse.urljoin(host, endPoint)
 
-    proxy = urllib2.ProxyHandler({})
-    opener = urllib2.build_opener(proxy)
-    req = urllib2.Request(target)
+    proxy = urllib.request.ProxyHandler({})
+    opener = urllib.request.build_opener(proxy)
+    req = urllib.request.Request(target)
     req.add_header('Content-Type', 'application/json')
 
     try:
