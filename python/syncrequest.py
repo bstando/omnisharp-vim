@@ -1,4 +1,4 @@
-import vim, urllib2, urllib, urlparse, json
+import vim, urllib, json
 
 def get_response(endPoint, params=None, timeout=None):
     parameters = {}

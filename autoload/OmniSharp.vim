@@ -1,4 +1,4 @@
-if !has('python')
+if !has('python3')
   finish
 endif
 
@@ -122,7 +122,7 @@ function! OmniSharp#NavigateDown() abort
 endfunction
 
 function! OmniSharp#GotoDefinition() abort
-  python gotoDefinition()
+  python3 gotoDefinition()
 endfunction
 
 function! OmniSharp#JumpToLocation(filename, line, column) abort
@@ -193,7 +193,7 @@ function! OmniSharp#GetIssues() abort
 endfunction
 
 function! OmniSharp#FixIssue() abort
-  python fixCodeIssue()
+  python3 fixCodeIssue()
 endfunction
 
 function! OmniSharp#FindSyntaxErrors() abort
@@ -264,13 +264,13 @@ function! OmniSharp#TypeLookup(includeDocumentation) abort
   let type = ''
 
   if g:OmniSharp_typeLookupInPreview || a:includeDocumentation ==# 'True'
-    python typeLookup("type")
+    python3 typeLookup("type")
     let preWinNr = winnr()
     call s:GoScratch()
-    python vim.current.window.height = 5
+    python3 vim.current.window.height = 5
     let doc = get(s:, 'documentation', '')
     set modifiable
-    exec 'python vim.current.buffer[:] = ["' . type . '"] + """' . doc . '""".splitlines()'
+    exec 'python3 vim.current.buffer[:] = ["' . type . '"] + """' . doc . '""".splitlines()'
     set nomodifiable
     "Return to original window
     execute preWinNr . 'wincmd w'
@@ -288,7 +288,7 @@ function! OmniSharp#TypeLookup(includeDocumentation) abort
       endfor
     endif
     if found_line_in_loc_list == 0
-      python typeLookup("type")
+      python3 typeLookup("type")
       call OmniSharp#Echo(type)
     endif
   endif
@@ -348,7 +348,7 @@ function! OmniSharp#Build() abort
 endfunction
 
 function! OmniSharp#BuildAsync() abort
-  python buildcommand()
+  python3 buildcommand()
   let &l:makeprg=b:buildcommand
   setlocal errorformat=\ %#%f(%l\\\,%c):\ %m
   Make
@@ -356,10 +356,10 @@ endfunction
 
 function! OmniSharp#RunTests(mode) abort
   wall
-  python buildcommand()
+  python3 buildcommand()
 
   if a:mode !=# 'last'
-    python getTestCommand()
+    python3 getTestCommand()
   endif
 
   let s:cmdheight=&cmdheight
@@ -392,7 +392,7 @@ function! OmniSharp#EnableTypeHighlighting() abort
     return
   endif
 
-  python lookupAllUserTypes()
+  python3 lookupAllUserTypes()
 
   let startBuf = bufnr('%')
   " Perform highlighting for existing buffers
@@ -408,12 +408,12 @@ augroup END
 endfunction
 
 function! OmniSharp#ReloadSolution() abort
-  python getResponse("/reloadsolution")
+  python3 getResponse("/reloadsolution")
 endfunction
 
 function! OmniSharp#UpdateBuffer() abort
   if OmniSharp#BufferHasChanged() == 1
-    python getResponse("/updatebuffer")
+    python3 getResponse("/updatebuffer")
   endif
 endfunction
 
@@ -429,7 +429,7 @@ function! OmniSharp#BufferHasChanged() abort
 endfunction
 
 function! OmniSharp#CodeFormat() abort
-  python codeFormat()
+  python3 codeFormat()
 endfunction
 
 function! OmniSharp#FixUsings() abort
@@ -443,7 +443,7 @@ endfunction
 
 function! OmniSharp#ServerIsRunning() abort
   try
-    python vim.command("let s:alive = '" + getResponse("/checkalivestatus", None, 0.2) + "'");
+    python3 vim.command("let s:alive = '" + getResponse("/checkalivestatus", None, 0.2) + "'");
     return s:alive ==# 'true'
   catch
     return 0
@@ -557,7 +557,7 @@ function! OmniSharp#RunAsyncCommand(command) abort
 endfunction
 
 function! OmniSharp#AddToProject() abort
-  python getResponse("/addtoproject")
+  python3 getResponse("/addtoproject")
 endfunction
 
 function! OmniSharp#AskStopServerIfRunning() abort
@@ -579,7 +579,7 @@ function! OmniSharp#StopServer(...) abort
   endif
 
   if force || OmniSharp#ServerIsRunning()
-    python getResponse("/stopserver")
+    python3 getResponse("/stopserver")
     let g:OmniSharp_running_slns = []
   endif
 endfunction
@@ -590,7 +590,7 @@ function! OmniSharp#AddReference(reference) abort
   else
     let a:ref = a:reference
   endif
-  python addReference()
+  python3 addReference()
 endfunction
 
 function! OmniSharp#AppendCtrlPExtensions() abort

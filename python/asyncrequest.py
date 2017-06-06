@@ -1,4 +1,4 @@
-import vim, urllib2, urllib, urlparse, logging, json, os, os.path, cgi, types, threading
+import vim, urllib, logging, json, os, os.path, cgi, types, threading
 
 class ThreadUrl(threading.Thread):
 
@@ -11,8 +11,8 @@ class ThreadUrl(threading.Thread):
 
     def run(self):
         try:
-            proxy = urllib2.ProxyHandler({})
-            opener = urllib2.build_opener(proxy)
+            proxy = urllib.ProxyHandler({})
+            opener = urllib.build_opener(proxy)
             response = opener.open(self.url, self.data, self.timeout)
             self.callback(response.read())
         except:
