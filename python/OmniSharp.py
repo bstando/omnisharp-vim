@@ -1,4 +1,4 @@
-import vim, urllib2, urllib, urlparse, logging, json, os, os.path, cgi, types, threading
+import vim, urllib, logging, json, os, os.path, cgi, types, threading
 import asyncrequest
 
 logger = logging.getLogger('omnisharp')
@@ -74,7 +74,7 @@ def gotoDefinition():
         if(definition['FileName'] != None):
             openFile(definition['FileName'].replace("'","''"), definition['Line'], definition['Column'])
         else:
-            print "Not found"
+            print("Not found")
 
 def openFile(filename, line, column):
     vim.command("call OmniSharp#JumpToLocation('%(filename)s', %(line)s, %(column)s)" % locals())
@@ -159,9 +159,9 @@ def build():
 
     success = js["Success"]
     if success:
-        print "Build succeeded"
+        print("Build succeeded")
     else:
-        print "Build failed"
+        print("Build failed")
 
     return quickfixes_from_js(js, 'QuickFixes')
 
@@ -194,7 +194,7 @@ def addReference():
     js = getResponse("/addreference", parameters)
     if js != '':
         message = json.loads(js)['Message']
-        print message
+        print(message)
 
 def findSyntaxErrors():
     js = getResponse('/syntaxerrors')
